@@ -4,6 +4,9 @@ networks:
   rustdesk-net:
     external: false
 
+volumes:
+  rustdesk-data:
+
 services:
   hbbs:
     container_name: hbbs
@@ -15,7 +18,7 @@ services:
     image: rustdesk/rustdesk-server:latest
     command: hbbs -r rustdesk.trilinksoftware.com.br:21117
     volumes:
-      - ./data:/root
+      - rustdesk-data:/root
     networks:
       - rustdesk-net
     depends_on:
@@ -30,7 +33,7 @@ services:
     image: rustdesk/rustdesk-server:latest
     command: hbbr
     volumes:
-      - ./data:/root
+      - rustdesk-data:/root
     networks:
       - rustdesk-net
     restart: unless-stopped
