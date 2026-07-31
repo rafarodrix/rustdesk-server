@@ -1,25 +1,43 @@
-version: '3.8'
-
-volumes:
-  rustdesk-data:
-
 services:
   hbbs:
     container_name: hbbs
-    image: rustdesk/rustdesk-server:latest
-    command: hbbs -r rustdesk.trilinksoftware.com.br:21117 -k _
+    image: ghcr.io/rustdesk/rustdesk-server:1.1.16
+    command: hbbs -r rustdesk.trilinksoftware.com.br:21117
+
     volumes:
       - rustdesk-data:/root
-    network_mode: "host"
-    depends_on:
-      - hbbr
+
+    network_mode: host
     restart: unless-stopped
+
+    environment:
+      RUST_LOG: info
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
 
   hbbr:
     container_name: hbbr
-    image: rustdesk/rustdesk-server:latest
-    command: hbbr -k _
+    image: ghcr.io/rustdesk/rustdesk-server:1.1.16
+    command: hbbr
+
     volumes:
       - rustdesk-data:/root
-    network_mode: "host"
+
+    network_mode: host
     restart: unless-stopped
+
+    environment:
+      RUST_LOG: info
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+volumes:
+  rustdesk-data:
